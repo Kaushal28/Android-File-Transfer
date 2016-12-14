@@ -38,7 +38,6 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
 
         // TCP
-        // from: http://www.rgagnon.com/javadetails/java-0542.html
         serverTransmitButton = (Button) findViewById(R.id.button_TCP_server);
         serverTransmitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -65,7 +64,6 @@ public class MainActivity extends Activity
         });
 
         // UDP
-//        // from: http://www.helloandroid.com/tutorials/simple-udp-communication-example
 //        serverUDPButton = (Button) findViewById(R.id.button_UDP_server);
 //        serverUDPButton.setOnClickListener(new View.OnClickListener() {
 //
