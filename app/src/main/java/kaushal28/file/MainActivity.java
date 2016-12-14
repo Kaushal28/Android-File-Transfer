@@ -17,10 +17,15 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity
 {
@@ -28,7 +33,8 @@ public class MainActivity extends Activity
     private Button clientReceiveButton;
     private Button serverUDPButton;
     private Button clientUDPButton;
-
+    private int PICKFILE_REQUEST_CODE = 100;
+    private String filePath="";
 
     /** Called when the activity is first created. */
     @Override
@@ -45,8 +51,11 @@ public class MainActivity extends Activity
 
 //////////////////////////////////////////////
 
-                first f = new first(MainActivity.this,MainActivity.this);
-                f.execute();
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("file/*");
+                startActivityForResult(intent, PICKFILE_REQUEST_CODE);
+
+
 
             }
         });
@@ -87,5 +96,38 @@ public class MainActivity extends Activity
 //
 //            }
 //        });
+    }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        filePath = data.getDataString();
+
+        Uri uri = data.getData();
+        String uriString = uri.toString();
+        File myFile = new File(uriString);
+        String path = myFile.getAbsolutePath();
+
+        if (uriString.startsWith("content://")) {
+            Cursor cursor = null;
+            try {
+                cursor = this.getContentResolver().query(uri, null, null, null, null);
+                if (cursor != null && cursor.moveToFirst()) {
+                    filePath = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                    Toast.makeText(this,filePath,Toast.LENGTH_LONG).show();
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        } else if (uriString.startsWith("file://")) {
+            filePath = myFile.getName();
+            Toast.makeText(this,filePath,Toast.LENGTH_LONG).show();
+        }
+
+        first f = new first(MainActivity.this,MainActivity.this,filePath);
+        f.execute();
+
+        //TODO handle your request here
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

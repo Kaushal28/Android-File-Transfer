@@ -2,6 +2,7 @@ package kaushal28.file;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -32,13 +33,15 @@ public class first extends AsyncTask<Void,Void,Void> {
     private ArrayList<String> a;
     private ListView listView;
     private Context context;
-    Activity activity;
-    String destinationAddress="-1";
+    private Activity activity;
+    private String destinationAddress="-1";
+    private String filePath;
 
 
-    first(Context context, Activity act){
+    first(Context context, Activity act, String path){
         this.context = context;
         this.activity = act;
+        this.filePath = path;
     }
 
     @Override
@@ -79,12 +82,16 @@ public class first extends AsyncTask<Void,Void,Void> {
         System.out.println("about to create.");
 
 
+
+
         //Add files (Music or whatever) to array list to send them!
 //        files.add(new File("mnt/sdcard/Download/ab.mp3"));
 //        files.add(new File("mnt/sdcard/Download/bh.mp3"));
 //        files.add(new File("mnt/sdcard/Download/bc.mp3"));
 
-        files.add(new File("mnt/sdcard/Download/x.apk"));
+        filePath = filePath.replace("%20"," ");
+
+        files.add(new File("/mnt/sdcard/Download/"+filePath));
         System.out.println("file created..");
         try {
 
