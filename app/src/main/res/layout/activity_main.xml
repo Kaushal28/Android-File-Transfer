@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <Button android:id="@+id/button_TCP_server"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Send" />
+
+    <Button android:id="@+id/button_TCP_client"
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/button_TCP_server"
+        android:layout_height="wrap_content"
+        android:text="Receive(Wait)" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="If You select SEND, then available devices will appear below, Select a valid One:"
+        android:textStyle="bold"
+        android:id="@+id/tv"
+        android:layout_below="@+id/button_TCP_client"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:clickable="true"
+        android:layout_below="@+id/tv"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>
