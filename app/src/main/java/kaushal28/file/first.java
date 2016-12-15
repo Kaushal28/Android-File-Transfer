@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class first extends AsyncTask<Void,Void,Void> {
     private String wholePath;
     private boolean xceptionFlag = false;
     private Socket socket;
-
+    private String hostName,canonicalHostname;
 
     first(Context context, Activity act, String path, String fullPath){
         this.context = context;
@@ -226,6 +227,13 @@ public class first extends AsyncTask<Void,Void,Void> {
 
                                 //Assigning values to final array or array list is perfectly fine.
                                 arr.add(ipAddress);
+
+                                InetAddress inetAddress = InetAddress.getByName(ipAddress);
+                                hostName = inetAddress.getHostName();
+                                canonicalHostname = inetAddress.getCanonicalHostName();
+
+                                Toast.makeText(context,hostName+canonicalHostname,Toast.LENGTH_LONG).show();
+
                             }
 
                         }

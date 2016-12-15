@@ -105,38 +105,47 @@ public class MainActivity extends Activity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        filePath = data.getDataString();
 
-        Uri uri = data.getData();
-        String uriString = uri.toString();
-        File myFile = new File(uriString);
-        String path = myFile.getAbsolutePath();
+            if(requestCode == Activity.RESULT_CANCELED){
 
-        if (uriString.startsWith("content://")) {
-            Cursor cursor = null;
-            try {
-                cursor = this.getContentResolver().query(uri, null, null, null, null);
-                if (cursor != null && cursor.moveToFirst()) {
-                    filePath = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+            }
+             else{
+                Uri uri = data.getData();
+                String uriString = uri.toString();
+                File myFile = new File(uriString);
+                String path = myFile.getAbsolutePath();
+
+                if (uriString.startsWith("content://")) {
+                    Cursor cursor = null;
+                    try {
+                        cursor = this.getContentResolver().query(uri, null, null, null, null);
+                        if (cursor != null && cursor.moveToFirst()) {
+                            filePath = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                            Toast.makeText(this,filePath,Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                } else if (uriString.startsWith("file://")) {
+                    filePath = myFile.getName();
                     Toast.makeText(this,filePath,Toast.LENGTH_LONG).show();
                 }
+
+
+                Uri Selected = data.getData();
+
+                wholePath = getRealPathFromURI(Selected);
+
+                Toast.makeText(this,wholePath,Toast.LENGTH_LONG).show();
+
+
+                first f = new first(MainActivity.this,MainActivity.this,filePath,wholePath);
+                f.execute();
             }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        } else if (uriString.startsWith("file://")) {
-            filePath = myFile.getName();
-            Toast.makeText(this,filePath,Toast.LENGTH_LONG).show();
-        }
 
 
-        Uri Selected = data.getData();
-
-        wholePath = getRealPathFromURI(Selected);
-
-        Toast.makeText(this,wholePath,Toast.LENGTH_LONG).show();
 
 
-        first f = new first(MainActivity.this,MainActivity.this,filePath,wholePath);
-        f.execute();
 
         //TODO handle your request here
         super.onActivityResult(requestCode, resultCode, data);
