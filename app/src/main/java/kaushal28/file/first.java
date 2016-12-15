@@ -2,7 +2,6 @@ package kaushal28.file;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -36,6 +34,7 @@ public class first extends AsyncTask<Void,Void,Void> {
     private Activity activity;
     private String destinationAddress="-1";
     private String filePath;
+    private boolean xceptionFlag = false;
 
 
     first(Context context, Activity act, String path){
@@ -155,6 +154,7 @@ public class first extends AsyncTask<Void,Void,Void> {
             dos.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
+            xceptionFlag = true;
             e.printStackTrace();
         }
 
@@ -167,7 +167,12 @@ public class first extends AsyncTask<Void,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        Toast.makeText(context,"files Sent Successfully!!",Toast.LENGTH_LONG).show();
+        if(xceptionFlag){
+            Toast.makeText(context,"Something went wrong.",Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(context,"files Sent Successfully!!",Toast.LENGTH_LONG).show();
+        }
     }
 
     public ArrayList<String> getClientList() {
@@ -215,11 +220,13 @@ public class first extends AsyncTask<Void,Void,Void> {
                     }
 
                 } catch (Exception e) {
+                    xceptionFlag = true;
                     e.printStackTrace();
                 } finally {
                     try {
                         br.close();
                     } catch (IOException e) {
+                        xceptionFlag = true;
                         e.printStackTrace();
                     }
                 }
@@ -232,6 +239,7 @@ public class first extends AsyncTask<Void,Void,Void> {
             thread.join();
         }
         catch (Exception e){
+            xceptionFlag = true;
             e.printStackTrace();
         }
         return arr;

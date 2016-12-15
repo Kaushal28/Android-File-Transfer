@@ -26,6 +26,7 @@ public class second extends AsyncTask<Void,Void,Void> {
 
     private Context context;
     private Activity activity;
+    private boolean xceptionFlag = false;
 
     second(Context c, Activity a){
         this.context = c;
@@ -91,27 +92,19 @@ public class second extends AsyncTask<Void,Void,Void> {
                 }
                 fos.close();
 
-
-
 //                while((n = dis.read(buf)) != -1){
 //                    fos.write(buf,0,n);
 //                    fos.flush();
 //                }
 //                fos.close();
             }
-
         } catch (IOException e) {
             // TODO Auto-generated catch block
+            xceptionFlag = true;
             e.printStackTrace();
 
         }
-
-
-
         ////////////////////
-
-
-
         Log.i("== the end of read ====", "==");
 
         return null;
@@ -121,6 +114,12 @@ public class second extends AsyncTask<Void,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        Toast.makeText(context,"files Received Successfully!!",Toast.LENGTH_LONG).show();
+        if (!xceptionFlag){
+            Toast.makeText(context,"files Received Successfully!!",Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(context,"Something went wrong.",Toast.LENGTH_LONG).show();
+        }
+
     }
 }
