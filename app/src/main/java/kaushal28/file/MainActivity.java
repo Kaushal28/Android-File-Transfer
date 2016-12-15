@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,7 @@ public class MainActivity extends Activity
     private Button clientUDPButton;
     private int PICKFILE_REQUEST_CODE = 100;
     private String filePath="";
+    private String wholePath="";
 
     /** Called when the activity is first created. */
     @Override
@@ -124,10 +126,34 @@ public class MainActivity extends Activity
             Toast.makeText(this,filePath,Toast.LENGTH_LONG).show();
         }
 
-        first f = new first(MainActivity.this,MainActivity.this,filePath);
+
+        Uri Selected = data.getData();
+
+        wholePath = getRealPathFromURI(Selected);
+
+        Toast.makeText(this,wholePath,Toast.LENGTH_LONG).show();
+
+
+        first f = new first(MainActivity.this,MainActivity.this,filePath,wholePath);
         f.execute();
 
         //TODO handle your request here
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
 }

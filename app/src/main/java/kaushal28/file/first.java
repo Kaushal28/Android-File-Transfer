@@ -34,13 +34,15 @@ public class first extends AsyncTask<Void,Void,Void> {
     private Activity activity;
     private String destinationAddress="-1";
     private String filePath;
+    private String wholePath;
     private boolean xceptionFlag = false;
 
 
-    first(Context context, Activity act, String path){
+    first(Context context, Activity act, String path, String fullPath){
         this.context = context;
         this.activity = act;
         this.filePath = path;
+        this.wholePath = fullPath;
     }
 
     @Override
@@ -88,9 +90,9 @@ public class first extends AsyncTask<Void,Void,Void> {
 //        files.add(new File("mnt/sdcard/Download/bh.mp3"));
 //        files.add(new File("mnt/sdcard/Download/bc.mp3"));
 
-        filePath = filePath.replace("%20"," ");
+       // filePath = filePath.replace("%20"," ");
 
-        files.add(new File("/mnt/sdcard/Download/"+filePath));
+        files.add(new File(wholePath));
         System.out.println("file created..");
         try {
 
