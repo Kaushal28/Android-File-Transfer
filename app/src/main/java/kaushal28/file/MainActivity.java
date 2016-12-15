@@ -53,6 +53,7 @@ public class MainActivity extends Activity
 
 //////////////////////////////////////////////
 
+                //open a file manager to let user choose desired file.
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("file/*");
                 startActivityForResult(intent, PICKFILE_REQUEST_CODE);
