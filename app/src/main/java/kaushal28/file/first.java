@@ -36,6 +36,7 @@ public class first extends AsyncTask<Void,Void,Void> {
     private String filePath;
     private String wholePath;
     private boolean xceptionFlag = false;
+    private Socket socket;
 
 
     first(Context context, Activity act, String path, String fullPath){
@@ -111,7 +112,9 @@ public class first extends AsyncTask<Void,Void,Void> {
             }
 
             //User has selected something, It's time to send files there!
-            Socket socket = new Socket(destinationAddress,5004);
+            socket = new Socket(destinationAddress,5004);
+//            socket.setReuseAddress(true);
+
             System.out.println("Connecting...");
             DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
@@ -161,7 +164,15 @@ public class first extends AsyncTask<Void,Void,Void> {
         }
 
         Log.i("===end of start ====", "==");
-
+        try{
+            if(!socket.isClosed()){
+                socket.close();
+            }
+        }
+        catch (Exception e){
+            xceptionFlag = true;
+            e.printStackTrace();
+        }
 
         return null;
     }

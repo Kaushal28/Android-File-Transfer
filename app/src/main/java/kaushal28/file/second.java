@@ -3,6 +3,7 @@ package kaushal28.file;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 import java.io.BufferedInputStream;
@@ -27,6 +28,7 @@ public class second extends AsyncTask<Void,Void,Void> {
     private Context context;
     private Activity activity;
     private boolean xceptionFlag = false;
+    private ServerSocket ss;
 
     second(Context c, Activity a){
         this.context = c;
@@ -43,7 +45,7 @@ public class second extends AsyncTask<Void,Void,Void> {
 //            ServerSocket ss = new ServerSocket(5004);
 
             //this is done isntead of above line because it was givind error of address is already in use.
-            ServerSocket ss = new ServerSocket();
+            ss = new ServerSocket();
             ss.setReuseAddress(true);
             ss.bind(new InetSocketAddress(5004));
 
@@ -79,8 +81,23 @@ public class second extends AsyncTask<Void,Void,Void> {
             for(int i = 0; i < files.size();i++){
 
                 System.out.println("Receiving file: " + files.get(i).getName());
+
+                //Create new Folder for our app, if it is not there and store received files there in our separate folder.
+                File folder = new File(Environment.getExternalStorageDirectory() +
+                        File.separator + "File");
+                boolean success = true;
+                if (!folder.exists()) {
+                    success = folder.mkdirs();
+                }
+                if (success) {
+                    // Do something on success
+                } else {
+                    // Do something else on failure
+                }
+
+
                 //create a new fileoutputstream for each new file
-                FileOutputStream fos = new FileOutputStream("mnt/sdcard/Download/" +files.get(i).getName());
+                FileOutputStream fos = new FileOutputStream("mnt/sdcard/File/" +files.get(i).getName());
                 //read file
 
                 while (fileSize.get(i) > 0 && (n = dis.read(buf, 0, (int)Math.min(buf.length, fileSize.get(i)))) != -1)
@@ -106,7 +123,15 @@ public class second extends AsyncTask<Void,Void,Void> {
         }
         ////////////////////
         Log.i("== the end of read ====", "==");
-
+        try{
+            if(!ss.isClosed()){
+                ss.close();
+            }
+        }
+        catch (Exception e){
+            xceptionFlag = true;
+            e.printStackTrace();
+        }
         return null;
     }
 
