@@ -18,8 +18,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.Inet4Address;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class first extends AsyncTask<Void,Void,Void> {
     private boolean xceptionFlag = false;
     private Socket socket;
     private String hostName,canonicalHostname;
+    private String givenName;
 
     first(Context context, Activity act, String path, String fullPath){
         this.context = context;
@@ -55,7 +57,7 @@ public class first extends AsyncTask<Void,Void,Void> {
 
         //Setting listView to display IP Addresses Which are available to send our files!
         listView = (ListView)activity.findViewById(R.id.listView);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 context,
                 android.R.layout.simple_list_item_1,
                 a );
@@ -68,6 +70,7 @@ public class first extends AsyncTask<Void,Void,Void> {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
+                //now we have host names like Xender so change following line. Get Ipaddress instead of host names.
                 destinationAddress = (String)adapterView.getItemAtPosition(position);
 
             }
@@ -196,7 +199,7 @@ public class first extends AsyncTask<Void,Void,Void> {
         Thread thread = new Thread(new Runnable() {
 
 
-            int counter = 0;
+
             @Override
             public void run() {
                 BufferedReader br = null;
@@ -225,14 +228,28 @@ public class first extends AsyncTask<Void,Void,Void> {
                                 Log.d("Device Information", ipAddress + " : "
                                         + macAddress);
 
-                                //Assigning values to final array or array list is perfectly fine.
-                                arr.add(ipAddress);
+                                //added afterwards.
 
+                                try {
+                                    Socket socket = new Socket();
+                                    socket.connect(new InetSocketAddress(ipAddress, 5006), 5000);
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                                    givenName = reader.readLine();
+                                    reader.close();
+                                    socket.close();
+                                    Log.i("TAG", givenName);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                                //Assigning values to final array or array list is perfectly fine.
+                                arr.add(givenName);
                                 InetAddress inetAddress = InetAddress.getByName(ipAddress);
                                 hostName = inetAddress.getHostName();
                                 canonicalHostname = inetAddress.getCanonicalHostName();
 
-                                Toast.makeText(context,hostName+canonicalHostname,Toast.LENGTH_LONG).show();
+                              //  Toast.makeText(context,hostName+canonicalHostname,Toast.LENGTH_LONG).show();
 
                             }
 

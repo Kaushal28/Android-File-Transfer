@@ -68,7 +68,7 @@ public class MainActivity extends Activity
         clientReceiveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.i("Read Button Clicked", "yipee");
-
+                startService(new Intent(MainActivity.this, NameService.class));
                 second s = new second(MainActivity.this,MainActivity.this);
                 s.execute();
 

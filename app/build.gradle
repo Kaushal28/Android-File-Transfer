@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.3"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "kaushal28.file"
-        minSdkVersion 17
+        minSdkVersion 10
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"

@@ -44,7 +44,7 @@ public class second extends AsyncTask<Void,Void,Void> {
 
 //            ServerSocket ss = new ServerSocket(5004);
 
-            //this is done isntead of above line because it was givind error of address is already in use.
+            //this is done instead of above line because it was giving error of address is already in use.
             ss = new ServerSocket();
             ss.setReuseAddress(true);
             ss.bind(new InetSocketAddress(5004));
@@ -57,7 +57,7 @@ public class second extends AsyncTask<Void,Void,Void> {
             DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 //read the number of files from the client
             int number = dis.readInt();
-            ArrayList<File>files = new ArrayList<File>(number);
+            ArrayList<File>files = new ArrayList<>(number);
             System.out.println("Number of Files to be received: " +number);
 
             ArrayList<Long> fileSize = new ArrayList<>(number);
