@@ -228,8 +228,8 @@ public class first extends AsyncTask<Void,Void,Void> {
                                 Log.d("Device Information", ipAddress + " : "
                                         + macAddress);
 
-                                //added afterwards.
-
+                                //added afterwards for receiving names of available clients..
+                                //but by adding this names to array list, the ip addresses is lost. so do something.
                                 try {
                                     Socket socket = new Socket();
                                     socket.connect(new InetSocketAddress(ipAddress, 5006), 5000);

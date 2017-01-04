@@ -38,9 +38,14 @@ public class NameService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        //Use shared preferences to save the name of the client!
 //        myName = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
 //                .getString("NAME_STRING", "TEST.NAME");
-        myName = "Shah";
+
+
+        //Temporarily this is kaushal28.
+        myName = "Kaushal28";
 
         if (!running)
         {
