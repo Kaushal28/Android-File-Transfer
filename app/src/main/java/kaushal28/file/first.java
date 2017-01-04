@@ -82,13 +82,9 @@ public class first extends AsyncTask<Void,Void,Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
-
         System.out.println("array list");
         ArrayList<File> files = new ArrayList<>();
         System.out.println("about to create.");
-
-
-
 
         //Add files (Music or whatever) to array list to send them!
 //        files.add(new File("mnt/sdcard/Download/ab.mp3"));
@@ -232,6 +228,7 @@ public class first extends AsyncTask<Void,Void,Void> {
                                 //but by adding this names to array list, the ip addresses is lost. so do something.
                                 try {
                                     Socket socket = new Socket();
+                                    //receive from port 5006 and timeout is 5s.
                                     socket.connect(new InetSocketAddress(ipAddress, 5006), 5000);
                                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                                     givenName = reader.readLine();
@@ -241,9 +238,8 @@ public class first extends AsyncTask<Void,Void,Void> {
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-
-
                                 //Assigning values to final array or array list is perfectly fine.
+                                //here add ipAddress to see working transfer.
                                 arr.add(givenName);
                                 InetAddress inetAddress = InetAddress.getByName(ipAddress);
                                 hostName = inetAddress.getHostName();
@@ -283,6 +279,4 @@ public class first extends AsyncTask<Void,Void,Void> {
         return arr;
 
     }
-
-
 }
