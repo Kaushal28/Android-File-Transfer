@@ -43,9 +43,10 @@ public class NameService extends Service {
 //        myName = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
 //                .getString("NAME_STRING", "TEST.NAME");
 
+       myName = PreferenceManager.getDefaultSharedPreferences(this).getString("name", "Kaushal28");
 
         //Temporarily this is kaushal28.
-        myName = "Kaushal28";
+       // myName = "Kaushal28";
 
         if (!running)
         {
